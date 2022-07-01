@@ -39,3 +39,16 @@ int Engine::l_GetPixel(lua_State *L) {
     return 0;
 }
 
+void Engine::OnKeyUp(lua_State *L, char k) {
+}
+
+void Engine::Update(lua_State *L, float d) {
+}
+
+void Engine::OnKeyDown(lua_State *L, char k) {
+}
+
+void Engine::Init(lua_State *L) {
+
+}
+
