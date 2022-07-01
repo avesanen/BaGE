@@ -12,7 +12,6 @@ class Engine {
 private:
     Engine() = default;
     sf::RenderWindow window;
-    lua_State* L{};
 public:
     static Engine& getInstance() {
         static Engine instance;
@@ -21,17 +20,17 @@ public:
     Engine(Engine const&) = delete;
     void operator = (Engine const&) = delete;
 
-    void Init();
-
+    void Run();
     // Lua C Functions
     static int l_SetPixel(lua_State *L);
+
     static int l_GetPixel(lua_State *L);
 
     // Lua callbacks
+    static void Init(lua_State *L);
     static void Update(lua_State *L, float d);
     static void OnKeyUp(lua_State *L, char k);
     static void OnKeyDown(lua_State *L, char k);
-    static void Init(lua_State *L);
 };
 
 

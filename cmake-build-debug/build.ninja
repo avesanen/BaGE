@@ -52,14 +52,14 @@ build cmake_object_order_depends_target_Engine: phony || CMakeFiles/Engine.dir
 build CMakeFiles/Engine.dir/src/main.cpp.o: CXX_COMPILER__Engine_Debug /Users/avesanen/Desktop/Engine/src/main.cpp || cmake_object_order_depends_target_Engine
   DEP_FILE = CMakeFiles/Engine.dir/src/main.cpp.o.d
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++17
-  INCLUDES = -I/opt/homebrew/include/lua -I/Users/avesanen/Desktop/Engine/include -isystem /opt/homebrew/include
+  INCLUDES = -I/opt/homebrew/include/lua -I/usr/local/include -I/Users/avesanen/Desktop/Engine/lib -I/Users/avesanen/Desktop/Engine/include -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/Engine.dir
   OBJECT_FILE_DIR = CMakeFiles/Engine.dir/src
 
 build CMakeFiles/Engine.dir/src/Engine.cpp.o: CXX_COMPILER__Engine_Debug /Users/avesanen/Desktop/Engine/src/Engine.cpp || cmake_object_order_depends_target_Engine
   DEP_FILE = CMakeFiles/Engine.dir/src/Engine.cpp.o.d
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk -std=gnu++17
-  INCLUDES = -I/opt/homebrew/include/lua -I/Users/avesanen/Desktop/Engine/include -isystem /opt/homebrew/include
+  INCLUDES = -I/opt/homebrew/include/lua -I/usr/local/include -I/Users/avesanen/Desktop/Engine/lib -I/Users/avesanen/Desktop/Engine/include -isystem /opt/homebrew/include
   OBJECT_DIR = CMakeFiles/Engine.dir
   OBJECT_FILE_DIR = CMakeFiles/Engine.dir/src
 

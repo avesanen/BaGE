@@ -36,6 +36,12 @@
 				"parent" : 0
 			},
 			{
+				"command" : 1,
+				"file" : 0,
+				"line" : 20,
+				"parent" : 0
+			},
+			{
 				"command" : 2,
 				"file" : 0,
 				"line" : 8,
@@ -44,7 +50,7 @@
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 14,
+				"line" : 16,
 				"parent" : 0
 			}
 		]
@@ -64,15 +70,23 @@
 			"includes" : 
 			[
 				{
-					"backtrace" : 3,
+					"backtrace" : 4,
 					"path" : "/opt/homebrew/include/lua"
 				},
 				{
-					"backtrace" : 4,
+					"backtrace" : 5,
+					"path" : "/usr/local/include"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "/Users/avesanen/Desktop/Engine/lib"
+				},
+				{
+					"backtrace" : 5,
 					"path" : "/Users/avesanen/Desktop/Engine/include"
 				},
 				{
-					"backtrace" : 2,
+					"backtrace" : 3,
 					"isSystem" : true,
 					"path" : "/opt/homebrew/include"
 				}
@@ -116,27 +130,27 @@
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
+				"backtrace" : 3,
 				"fragment" : "/opt/homebrew/lib/libsfml-graphics.2.5.1.dylib",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
+				"backtrace" : 3,
 				"fragment" : "/opt/homebrew/lib/libsfml-audio.2.5.1.dylib",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
+				"backtrace" : 3,
 				"fragment" : "/opt/homebrew/lib/libsfml-network.2.5.1.dylib",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
+				"backtrace" : 3,
 				"fragment" : "/opt/homebrew/lib/libsfml-window.2.5.1.dylib",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 2,
+				"backtrace" : 3,
 				"fragment" : "/opt/homebrew/lib/libsfml-system.2.5.1.dylib",
 				"role" : "libraries"
 			}
@@ -159,6 +173,13 @@
 				0,
 				1
 			]
+		},
+		{
+			"name" : "Header Files",
+			"sourceIndexes" : 
+			[
+				2
+			]
 		}
 	],
 	"sources" : 
@@ -174,6 +195,11 @@
 			"compileGroupIndex" : 0,
 			"path" : "src/Engine.cpp",
 			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "include/Engine.h",
+			"sourceGroupIndex" : 1
 		}
 	],
 	"type" : "EXECUTABLE"
