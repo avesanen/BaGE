@@ -12,6 +12,7 @@ class Engine {
 private:
     Engine() = default;
     sf::RenderWindow window;
+    sf::Image screen;
 public:
     static Engine& getInstance() {
         static Engine instance;
@@ -24,7 +25,6 @@ public:
 
     // Lua C Functions
     static int l_SetPixel(lua_State *L);
-
     static int l_GetPixel(lua_State *L);
 
     // Lua callbacks

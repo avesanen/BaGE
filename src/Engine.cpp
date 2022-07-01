@@ -5,6 +5,9 @@
 #include "Engine.h"
 
 void Engine::Init(lua_State *L) {
+    getInstance().screen.create(320, 240, sf::Color::Black);
+    getInstance().window.create(sf::VideoMode(660, 500), "Engine");
+    getInstance().window.setFramerateLimit(10);
     lua_getglobal(L, "Engine");
     if (!lua_istable(L, -1)) { return; }
     lua_getfield(L, -1, "Init");
@@ -14,11 +17,25 @@ void Engine::Init(lua_State *L) {
 }
 
 int Engine::l_SetPixel(lua_State *L) {
+    //auto engine = static_cast<Engine*>(lua_touserdata(L, 1));
+    auto x = (unsigned int)luaL_checknumber(L, 2);
+    auto y = (unsigned int)luaL_checknumber(L, 3);
+    auto r = (sf::Uint8)luaL_checknumber(L, 4);
+    auto g = (sf::Uint8)luaL_checknumber(L, 5);
+    auto b = (sf::Uint8)luaL_checknumber(L, 6);
+    getInstance().screen.setPixel(x, y, sf::Color(r,g,b));
     return 0;
 }
 
 int Engine::l_GetPixel(lua_State *L) {
-    return 0;
+    //auto engine = static_cast<Engine*>(lua_touserdata(L, 1));
+    auto x = (unsigned int)luaL_checknumber(L, 2);
+    auto y = (unsigned int)luaL_checknumber(L, 3);
+    sf::Color color = getInstance().screen.getPixel(x, y);
+    lua_pushinteger(L, color.r);
+    lua_pushinteger(L, color.g);
+    lua_pushinteger(L, color.b);
+    return 3;
 }
 
 void Engine::OnKeyDown(lua_State *L, char k) {
@@ -86,6 +103,10 @@ void Engine::Run(const char* file) {
 
     // Main engine loop
     sf::Clock deltaClock;
+    sf::Texture screenTex;
+    sf::Sprite screenSpr;
+    screenSpr.setScale(2,2);
+    screenSpr.setPosition(10,10);
     Init(L);
     while (window.isOpen()) {
         sf::Event event{};
@@ -103,10 +124,11 @@ void Engine::Run(const char* file) {
 
         Update(L, dt);
 
+        screenTex.loadFromImage(screen);
+        screenSpr.setTexture(screenTex);
         window.clear(sf::Color(64,64,64,255));
-
-        // draw
-
+        window.draw(screenSpr);
         window.display();
     }
+    lua_close(L);
 }
