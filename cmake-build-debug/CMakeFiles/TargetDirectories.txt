@@ -1,0 +1,3 @@
+/Users/avesanen/Desktop/Engine/cmake-build-debug/CMakeFiles/Engine.dir
+/Users/avesanen/Desktop/Engine/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/avesanen/Desktop/Engine/cmake-build-debug/CMakeFiles/rebuild_cache.dir
