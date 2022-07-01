@@ -8,7 +8,7 @@ Very simple game engine that runs games written in Lua.
 
 ## Tech
 
-- SFML 5.
+- SFML 2.5
 - C++ 17
 - Lua 5.4
 
