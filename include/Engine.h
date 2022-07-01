@@ -20,7 +20,8 @@ public:
     Engine(Engine const&) = delete;
     void operator = (Engine const&) = delete;
 
-    void Run();
+    void Run(const char*);
+
     // Lua C Functions
     static int l_SetPixel(lua_State *L);
 
