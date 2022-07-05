@@ -3,11 +3,9 @@
 //
 #include <iostream>
 #include "Engine.h"
+#include "Texture.h"
 
 void Engine::Init(lua_State *L) {
-    getInstance().screen.create(320, 240, sf::Color::Black);
-    getInstance().window.create(sf::VideoMode(660, 500), "Engine");
-    getInstance().window.setFramerateLimit(10);
     lua_getglobal(L, "Engine");
     if (!lua_istable(L, -1)) { return; }
     lua_getfield(L, -1, "Init");
@@ -69,16 +67,52 @@ void Engine::Update(lua_State *L, float d) {
     lua_pcall(L, 2,0,0);
 }
 
+int Engine::l_Draw(lua_State *L) {
+    //Engine *engine = static_cast<Engine*>(lua_touserdata(L, 1));
+    Texture *tex = *reinterpret_cast<Texture**>(luaL_checkudata(L, 2, "Texture"));
+    auto x = (float)luaL_checkinteger(L, 3);
+    auto y = (float)luaL_checkinteger(L, 4);
+    auto t = sf::Transform();
+    t.translate(x, y);
+    tex->UpdateTexture();
+    getInstance().window.draw(*tex, t);
+    return 0;
+}
+
+sf::View getLetterboxView(sf::View view, float windowWidth, float windowHeight) {
+    float windowRatio = windowWidth / windowHeight;
+    float viewRatio = view.getSize().x / (float) view.getSize().y;
+    float sizeX = 1;
+    float sizeY = 1;
+    float posX = 0;
+    float posY = 0;
+
+    bool horizontalSpacing = true;
+    if (windowRatio < viewRatio)
+        horizontalSpacing = false;
+    if (horizontalSpacing) {
+        sizeX = viewRatio / windowRatio;
+        posX = (1 - sizeX) / 2.f;
+    }
+    else {
+        sizeY = windowRatio / viewRatio;
+        posY = (1 - sizeY) / 2.f;
+    }
+    view.setViewport( sf::FloatRect(posX, posY, sizeX, sizeY) );
+    return view;
+}
+
 void Engine::Run(const char* file) {
-    // SFML Init
-    window.create(sf::VideoMode(660, 500), "Engine");
-    window.setFramerateLimit(30);
+    screen.create(320, 240, sf::Color::Black);
+    window.create(sf::VideoMode(640, 480), "Engine");
+    window.setVerticalSyncEnabled(true);
     window.setKeyRepeatEnabled(false);
 
     // Lua Init
     lua_State *L;
     L = luaL_newstate();
     luaL_openlibs(L);
+    Texture::l_Register(L);
 
     lua_newtable(L);
     int top = lua_gettop(L);
@@ -95,39 +129,48 @@ void Engine::Run(const char* file) {
     lua_pushcfunction(L, Engine::l_SetPixel);
     lua_settable(L, top);
 
-    lua_setglobal(L, "Engine");
+    lua_pushstring(L, "Draw");
+    lua_pushcfunction(L, Engine::l_Draw);
+    lua_settable(L, top);
 
+    lua_setglobal(L, "Engine");
 
     if(luaL_dofile(L, file))
         std::cerr << lua_tostring(L, -1);
 
     // Main engine loop
     sf::Clock deltaClock;
-    sf::Texture screenTex;
-    sf::Sprite screenSpr;
-    screenSpr.setScale(2,2);
-    screenSpr.setPosition(10,10);
+
+    sf::View view = window.getView();
+    view.zoom(0.5f);
+    view.move(-160,-120);
+
     Init(L);
+    deltaClock.restart();
     while (window.isOpen()) {
         sf::Event event{};
         while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed) {
                 window.close();
+            }
             if (event.type == sf::Event::KeyPressed) {
                 OnKeyDown(L, event.key.code);
             }
             if (event.type == sf::Event::KeyReleased) {
                 OnKeyUp(L, event.key.code);
             }
+            if (event.type == sf::Event::Resized) {
+                view = getLetterboxView(view, (float)event.size.width, (float)event.size.height);
+            }
         }
+
         float dt = deltaClock.restart().asSeconds();
+
+        window.clear(sf::Color::Black);
+        window.setView(view);
 
         Update(L, dt);
 
-        screenTex.loadFromImage(screen);
-        screenSpr.setTexture(screenTex);
-        window.clear(sf::Color(64,64,64,255));
-        window.draw(screenSpr);
         window.display();
     }
     lua_close(L);

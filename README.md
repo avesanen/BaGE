@@ -30,10 +30,10 @@ function Engine:OnKeyDown(key) end
 -- key is the key code
 function Engine:OnKeyUp(key) end
 
--- Engine:SetPixel(x, y, r, g, b) sets the pixel on cordinates x,y
+-- Engine:l_SetPixel(x, y, r, g, b) sets the pixel on cordinates x,y
 -- with color r,g,b.
-Engine:SetPixel(x, y, r, g, b)
+Engine:l_SetPixel(x, y, r, g, b)
 
---- Engine:GetPixel(x, y) returns colors r,g,b of the pixel at x,y.
-r, g, b = Engine:GetPixel(x, y)
+--- Engine:l_GetPixel(x, y) returns colors r,g,b of the pixel at x,y.
+r, g, b = Engine:l_GetPixel(x, y)
 ```

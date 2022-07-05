@@ -1,91 +1,49 @@
--- Testing
-
-print("Engine Version: "..Engine["version"])
-
-player = {
-    pos = {100, 100},
-    vel = {1, 0},
-    size = 10,
-    dead = false,
-    segments = {},
+local buffers
+local blurtable = {
+    0.0, 0.0, 0.0,
+    1.0, 1.0, 0.0,
+    1.0, 6.0, 0.0,
 }
+local fine = Texture(64,73)
+local text = Texture(96,64)
 
 function Engine:Init()
-    print("Initializing Snek Game")
-    for x = 0,319 do
-        for y = 0,239 do
-            Engine:SetPixel(x,y,0,0,0);
-        end
-    end
-    for x=0,319 do
-        Engine:SetPixel(x, 0, 128, 255, 255);
-        Engine:SetPixel(x, 239, 128, 255, 255);
-    end
-    for y=0,239 do
-        Engine:SetPixel(0, y, 128, 255, 255);
-        Engine:SetPixel(319, y, 128, 255, 255);
-    end
-
-    Engine:SetPixel(120, 120, 255, 128, 128);
-    player = {
-        pos = {100, 100},
-        vel = {1, 0},
-        size = 10,
-        dead = false,
-        segments = {},
-    }
+    buffers = { front = Texture(320,240), back = Texture(320,240)}
+    fine:LoadFile("thisisfine.png")
+    text:LoadFile("thisisfine2.png")
 end
 
-
-function AddApple()
-    x = math.random(0,320)
-    y = math.random(0,240)
-    Engine:SetPixel(x, y, 255, 128, 128);
+function swapBuffer()
+    buffers.back, buffers.front = buffers.front, buffers.back
 end
-respawnTimer = 2.0
 
-
+local clock = 0.0
 function Engine:Update(deltaTime)
-    if player.dead then
-        respawnTimer = respawnTimer - deltaTime
-        if respawnTimer > 0 then return end
-        Engine:Init()
+    math.sin(clock)
+    clock = clock + deltaTime
+    for x=0,319 do
+        c = math.random(0,255)
+        buffers.front:SetPixel(x, 239, c,c*0.5,0.0)
     end
-    player.pos[1] = player.pos[1] + player.vel[1]
-    player.pos[2] = player.pos[2] + player.vel[2]
-
-    table.insert(player.segments, {player.pos[1], player.pos[2]})
-    if #player.segments > player.size then
-        local pos = table.remove(player.segments, 1)
-        Engine:SetPixel(pos[1], pos[2], 0, 0 ,0)
-    end
-
-    r,g,b = Engine:GetPixel(player.pos[1], player.pos[2])
-
-    -- Apple
-    if (r == 255 and g == 128 and b == 128) then
-        AddApple()
-        player.size = player.size + 10
-    end
-
-    if (r == 255 and g == 255 and b == 255) or (r == 128 and g == 255 and b == 255) then
-        player.dead = true
-        respawnTimer = 2.0
-        for _=0,10 do
-            x = math.random(player.pos[1]-4,player.pos[1]+4)
-            y = math.random(player.pos[2]-4,player.pos[2]+4)
-            Engine:SetPixel(x,y, 255,0,0)
+    local r = math.random(-2,3)
+    for x=0,319 do
+        for y=0,238 do
+            c = {r=0,g=0,b=0}
+            r,g,b = buffers.front:GetPixel(x+math.random(-1,1), y+math.random(0,3))
+            c.r = r * 0.99
+            c.g = g * 0.99
+            c.b = b * 0.99
+            buffers.back:SetPixel(x, y, c.r, c.g, c.b)
         end
     end
-    Engine:SetPixel(player.pos[1], player.pos[2], 255,255,255)
+    Engine:Draw(buffers.front,0,0)
+    Engine:Draw(fine, 120-32,239-70)
+    Engine:Draw(text, 100,110+math.floor(math.sin(clock*4)*10))
+    swapBuffer();
 end
 
 
 function Engine:OnKeyDown(key)
-    if key == 0 then player.vel = {-1,0} end
-    if key == 3 then player.vel = {1,0} end
-    if key == 22 then player.vel = {0,-1} end
-    if key == 18 then player.vel = {0,1} end
 end
 
 

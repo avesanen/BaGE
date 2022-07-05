@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <lua.hpp>
+#include "Texture.h"
 
 class Engine {
 private:
@@ -26,6 +27,7 @@ public:
     // Lua C Functions
     static int l_SetPixel(lua_State *L);
     static int l_GetPixel(lua_State *L);
+    static int l_Draw(lua_State *L);
 
     // Lua callbacks
     static void Init(lua_State *L);
