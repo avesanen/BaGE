@@ -11,7 +11,7 @@ include_directories(${LUA_INCLUDE_DIR})
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 include_directories(${SFML_INCLUDE_DIRS})
 
-set(SOURCE_FILES src/main.cpp src/Engine.cpp include/Engine.h include/luaaa.h src/Texture.cpp include/Texture.h)
+set(SOURCE_FILES src/main.cpp src/Engine.cpp include/Engine.h include/luaaa.h src/Texture.cpp include/Texture.h src/Font.cpp include/Font.h)
 
 include_directories(/usr/local/include lib include)
 

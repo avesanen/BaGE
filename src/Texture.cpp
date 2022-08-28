@@ -67,7 +67,7 @@ int Texture::l_new(lua_State *L) {
 }
 
 int Texture::l_free(lua_State *L) {
-    printf("texture destroyed/n ");
+    printf("Texture destroyed\n");
     delete *reinterpret_cast<Texture**>(lua_touserdata(L, 1));
     return 0;
 }

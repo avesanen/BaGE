@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Engine.h"
 #include "Texture.h"
+#include "Font.h"
 
 void Engine::Init(lua_State *L) {
     lua_getglobal(L, "Engine");
@@ -103,8 +104,8 @@ sf::View getLetterboxView(sf::View view, float windowWidth, float windowHeight) 
 }
 
 void Engine::Run(const char* file) {
-    screen.create(320, 240, sf::Color::Black);
-    window.create(sf::VideoMode(640, 480), "Engine");
+    screen.create(320, 180, sf::Color::Black);
+    window.create(sf::VideoMode(640, 360), "Engine");
     window.setVerticalSyncEnabled(true);
     window.setKeyRepeatEnabled(false);
 
@@ -113,6 +114,7 @@ void Engine::Run(const char* file) {
     L = luaL_newstate();
     luaL_openlibs(L);
     Texture::l_Register(L);
+    Font::l_Register(L);
 
     lua_newtable(L);
     int top = lua_gettop(L);
@@ -143,7 +145,7 @@ void Engine::Run(const char* file) {
 
     sf::View view = window.getView();
     view.zoom(0.5f);
-    view.move(-160,-120);
+    view.move(-160,-90);
 
     Init(L);
     deltaClock.restart();
